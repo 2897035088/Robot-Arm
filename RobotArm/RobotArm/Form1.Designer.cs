@@ -63,6 +63,9 @@
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
@@ -215,6 +218,7 @@
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(54, 25);
             this.textBox4.TabIndex = 25;
+            this.textBox4.Text = "0";
             // 
             // textBox3
             // 
@@ -222,6 +226,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(54, 25);
             this.textBox3.TabIndex = 24;
+            this.textBox3.Text = "0";
             // 
             // textBox2
             // 
@@ -229,6 +234,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(54, 25);
             this.textBox2.TabIndex = 23;
+            this.textBox2.Text = "0";
             // 
             // textBox1
             // 
@@ -236,6 +242,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(54, 25);
             this.textBox1.TabIndex = 18;
+            this.textBox1.Text = "200";
             // 
             // label13
             // 
@@ -314,11 +321,13 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.textBox10);
             this.groupBox2.Controls.Add(this.textBox5);
+            this.groupBox2.Controls.Add(this.label15);
             this.groupBox2.Controls.Add(this.label14);
             this.groupBox2.Location = new System.Drawing.Point(15, 498);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(200, 59);
+            this.groupBox2.Size = new System.Drawing.Size(200, 93);
             this.groupBox2.TabIndex = 20;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "请输入绘图数据：";
@@ -372,11 +381,31 @@
             this.textBox9.Size = new System.Drawing.Size(84, 25);
             this.textBox9.TabIndex = 30;
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(14, 58);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(82, 15);
+            this.label15.TabIndex = 31;
+            this.label15.Text = "字体大小：";
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(92, 55);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(99, 25);
+            this.textBox10.TabIndex = 32;
+            // 
+            // timer2
+            // 
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1124, 569);
+            this.ClientSize = new System.Drawing.Size(1124, 624);
             this.Controls.Add(this.textBox9);
             this.Controls.Add(this.textBox8);
             this.Controls.Add(this.textBox7);
@@ -450,6 +479,9 @@
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 

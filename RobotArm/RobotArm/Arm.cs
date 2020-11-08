@@ -1,21 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
-using Emgu.CV;
-using Emgu.CV.Util;
-using Emgu.CV.Structure;
-using Emgu.CV.CvEnum;
-using Emgu.Util;
-using System.IO;
-using System.Threading;
+
 
 namespace RobotArm
 {
@@ -24,27 +12,27 @@ namespace RobotArm
         //
         // 摘要:
         //     机械臂的大臂长度
-        int L1 { set; get; }
+        public int L1 { set; get; }
         //
         // 摘要:
         //     机械臂的小臂长度
-        int L2 { set; get; }
+        public int L2 { set; get; }
         //
         // 摘要:
         //     机械臂的大臂旋转角度
-        double Ang1 { set; get; }
+        public double Ang1 { set; get; }
         //
         // 摘要:
         //     机械臂的小臂旋转角度
-        double Ang2 { set; get; }
+        public double Ang2 { set; get; }
         //
         // 摘要:
         //     画机械臂的位图
-        Bitmap Rbm { set; get; }
+        public Bitmap Rbm { set; get; }
         //
         // 摘要:
         //     画机械臂末端轨迹的位图
-        Bitmap Tbm { set; get; }
+        public Bitmap Tbm { set; get; }
 
         #region 将直线细分成点集
         /// <summary>
@@ -59,6 +47,8 @@ namespace RobotArm
             double x, y;//用来表示下一个机械臂末端位置
             List<PointF> points = new List<PointF>();
             double r = Math.Sqrt((startx - endx) * (startx - endx) + (starty - endy) * (starty - endy));//直线长度
+            //存在bug，因为是按线段长度划分的，不是按角度划分，因为一个很小的线段可能对应很大的一个角度变化，
+            //特别是当前末端位置与原点间的线段 与 当前末端位置与下一末端目标位置间的线段 近乎垂直时，角度变化最大
             for (int i = 0; i < r / 0.05; i++)//对所画图形进行分段计数
             {
                 x = startx + i / (r / 0.05) * (endx - startx);
@@ -110,9 +100,9 @@ namespace RobotArm
             double theta = Math.Atan2(y, x);//取值范围为（-PI,PI）
             double phi = Math.PI - Math.Acos((L1 * L1 + L2 * L2 - r * r) / (2 * L1 * L2));
             double theta1 = Math.Acos((r * r + L1 * L1 - L2 * L2) / (2 * L1 * r));
-            if (r == 0)
-            {
-                Ang2 = Math.PI;
+            if (r == 0)//特殊情况，即thetal计算式中的分母为零
+            {//选择上一时刻PI和-PI中跟Ang2近的一个
+                Ang2 = Math.Abs(Ang2 - Math.PI) < Math.Abs(Ang2 + Math.PI) ? Math.PI : (-Math.PI);
             }
             //两个解:（theta+theta1，-phi）、（theta-theta1，phi）
             //选解采用最短准则：即对应的两臂角度相对于上一时刻的两臂角度需要变动的角度和更小的解
@@ -144,7 +134,6 @@ namespace RobotArm
             PointF pointO = new PointF(200F, 200F);//机械臂O点位置，位于坐标原点
             PointF pointA = new PointF((float)(200 + L1 * Math.Cos(Ang1)), (float)(200 - L1 * Math.Sin(Ang1)));//机械臂A点位置
             PointF pointB = new PointF((float)(200 + L1 * Math.Cos(Ang1) + L2 * Math.Cos(Ang1 + Ang2)), (float)(200 - L1 * Math.Sin(Ang1) - L2 * Math.Sin(Ang1 + Ang2)));//机械臂B点位置
-
             Graphics g = Graphics.FromImage(Rbm);//定义图像，图像为抽象类，不可直接构造函数生成
             //绘制斜线时消除锯齿（鼠标放在那就可以看到函数功能）
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -165,7 +154,22 @@ namespace RobotArm
         }
         #endregion
 
-
+        #region 绘制机械臂末端前后两点的直线轨迹
+        /// <summary>
+        /// 绘制机械臂末端轨迹
+        /// </summary>
+        public void DrawTrajectory(PointF pointLast, PointF pointNow)
+        {
+            Graphics g = Graphics.FromImage(Tbm);
+            //绘制斜线时消除锯齿
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            //将机械臂上一次末端位置及现在末端位置连起来，因为两个位置及近，就是用直线不断拟合轨迹
+            g.DrawLine(new Pen(Color.Black, (float)0.4), pointLast, pointNow);
+            //释放资源
+            g.Dispose();
+        }
+        #endregion
 
         #region 延时函数
         /// <summary>
