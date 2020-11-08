@@ -69,8 +69,8 @@ namespace RobotArm
             {
                 pointLast = pointNow;//如果是绘制曲线的起点，便没有pointLast，令其就等与pointNow
             }
-            arm.DrawTrajectory(pointLast, pointNow);
-            pictureBox1.BackgroundImage = arm.Tbm;
+            arm.DrawTrajectory(pointLast, pointNow);//绘制机械臂末端前一时刻和当前时刻间的线段，视为轨迹
+            pictureBox1.BackgroundImage = arm.Tbm;//将轨迹显示在BackgroundImage中，保留了之前轨迹。
             pointLast = pointNow;//更新上一次机械臂末端位置，
         }
 
@@ -177,11 +177,12 @@ namespace RobotArm
                 List<PointF> points = arm.DrawLine(startX, startY, endX, endY);//直线细分后的点集
                 foreach (PointF point in points)
                 {
-                    arm.GetAngel(point.X, point.Y);
+                    arm.GetAngel(point.X, point.Y);//对每个点求解对应的大小臂旋转角度
+                    //创建新的位图，更新机械臂位置（可以直接用图像的Clear（Color.White）方法，但是个人不喜欢这个方法）
                     arm.Rbm = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
-                    arm.DrawMechanism();
-                    pictureBox1.Image = arm.Rbm;
-                    arm.DelayMs(4);
+                    arm.DrawMechanism();//根据大小臂旋转角度绘制机械臂
+                    pictureBox1.Image = arm.Rbm;//将更新后的机械臂设置为pictureBox的Image
+                    arm.DelayMs(4);//延时，使人眼可以看到。没有延时就无法看到中间过程
                 }
                 //将上一次的机械臂的末端位置（即上面说的目标图像的起点位置）设置为起点位置
                 startX = endX;
