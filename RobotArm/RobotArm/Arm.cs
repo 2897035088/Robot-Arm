@@ -49,7 +49,7 @@ namespace RobotArm
             double r = Math.Sqrt((startx - endx) * (startx - endx) + (starty - endy) * (starty - endy));//直线长度
             //存在bug，因为是按线段长度划分的，不是按角度划分，因为一个很小的线段可能对应很大的一个角度变化，
             //特别是当前末端位置与原点间的线段 与 当前末端位置与下一末端目标位置间的线段 近乎垂直时，角度变化最大
-            for (int i = 0; i < r / 0.05; i++)//对所画图形进行分段计数
+            for (int i = 0; i <= r / 0.05; i++)//对所画图形进行分段计数
             {
                 x = startx + i / (r / 0.05) * (endx - startx);
                 y = starty + i / (r / 0.05) * (endy - starty);
@@ -74,7 +74,7 @@ namespace RobotArm
             double x, y;
             double theta;//存储画圆时的弧度，取值范围（-PI,PI）
             double k = Math.PI * r / 0.05; //将圆的周长细分为2k个点
-            for (int i = 0; i < 2 * k; i++)//从圆的最左点开始逆时针绘制，即从-PI到PI绘制
+            for (int i = 0; i <= 2 * k + 1; i++)//从圆的最左点开始逆时针绘制，即从-PI到PI绘制
             {
                 theta = (i - k) / k * Math.PI;//每个点对应的弧度
                 //计算点的坐标
@@ -92,7 +92,7 @@ namespace RobotArm
         /// </summary>
         /// <param name="X">目标点的Y坐标（对应我定义的坐标系）</param>
         /// <param name="Y">目标点的Y坐标（对应我定义的坐标系）</param>
-        public void GetAngel(double X, double Y)
+        public void GetAngle(double X, double Y)
         {
             double x = X;
             double y = Y;

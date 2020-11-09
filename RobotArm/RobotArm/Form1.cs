@@ -77,8 +77,8 @@ namespace RobotArm
         //实时显示角度
         private void timer2_Tick(object sender, EventArgs e)
         {
-            textBox8.Text = arm.Ang1.ToString();
-            textBox9.Text = arm.Ang2.ToString();
+            textBox8.Text = (arm.Ang1 / Math.PI * 180).ToString();
+            textBox9.Text = (arm.Ang2 / Math.PI * 180).ToString();
         }
 
         //画直线按钮
@@ -177,7 +177,7 @@ namespace RobotArm
                 List<PointF> points = arm.DrawLine(startX, startY, endX, endY);//直线细分后的点集
                 foreach (PointF point in points)
                 {
-                    arm.GetAngel(point.X, point.Y);//对每个点求解对应的大小臂旋转角度
+                    arm.GetAngle(point.X, point.Y);//对每个点求解对应的大小臂旋转角度
                     //创建新的位图，更新机械臂位置（可以直接用图像的Clear（Color.White）方法，但是个人不喜欢这个方法）
                     arm.Rbm = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
                     arm.DrawMechanism();//根据大小臂旋转角度绘制机械臂
@@ -194,7 +194,7 @@ namespace RobotArm
                 timer1.Enabled = true;
                 foreach (PointF point in points)
                 {
-                    arm.GetAngel(point.X, point.Y);
+                    arm.GetAngle(point.X, point.Y);
                     arm.Rbm = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
                     arm.DrawMechanism();
                     pictureBox1.Image = arm.Rbm;
@@ -214,7 +214,7 @@ namespace RobotArm
                 List<PointF> points = arm.DrawLine(startX, startY, endX, endY);//直线细分后的点集
                 foreach (PointF point in points)
                 {
-                    arm.GetAngel(point.X, point.Y);
+                    arm.GetAngle(point.X, point.Y);
                     arm.Rbm = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
                     arm.DrawMechanism();
                     pictureBox1.Image = arm.Rbm;
@@ -224,7 +224,7 @@ namespace RobotArm
                 timer1.Enabled = true;
                 foreach (PointF point in points)
                 {
-                    arm.GetAngel(point.X, point.Y);
+                    arm.GetAngle(point.X, point.Y);
                     arm.Rbm = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
                     arm.DrawMechanism();
                     pictureBox1.Image = arm.Rbm;
@@ -247,7 +247,7 @@ namespace RobotArm
                     List<PointF> points = arm.DrawLine(startX, startY, endX, endY);//直线细分后的点集
                     foreach (PointF point in points)
                     {
-                        arm.GetAngel(point.X, point.Y);
+                        arm.GetAngle(point.X, point.Y);
                         arm.Rbm = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
                         arm.DrawMechanism();
                         pictureBox1.Image = arm.Rbm;
@@ -266,7 +266,7 @@ namespace RobotArm
                         timer1.Enabled = true;
                         foreach (PointF point in points)
                         {
-                            arm.GetAngel(point.X, point.Y);
+                            arm.GetAngle(point.X, point.Y);
                             arm.Rbm = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
                             arm.DrawMechanism();
                             pictureBox1.Image = arm.Rbm;
@@ -304,7 +304,7 @@ namespace RobotArm
                     List<PointF> points = arm.DrawLine(startX, startY, endX, endY);//直线细分后的点集
                     foreach (PointF p in points)
                     {
-                        arm.GetAngel(p.X, p.Y);
+                        arm.GetAngle(p.X, p.Y);
                         arm.Rbm = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
                         arm.DrawMechanism();
                         pictureBox1.Image = arm.Rbm;
@@ -322,7 +322,7 @@ namespace RobotArm
                             points = arm.DrawLine(startX, startY, endX, endY);//直线细分后的点集
                             foreach (PointF p in points)
                             {
-                                arm.GetAngel(p.X, p.Y);
+                                arm.GetAngle(p.X, p.Y);
                                 arm.Rbm = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
                                 arm.DrawMechanism();
                                 pictureBox1.Image = arm.Rbm;
@@ -344,7 +344,7 @@ namespace RobotArm
                                     timer1.Enabled = true;
                                     foreach (PointF p in points)
                                     {
-                                        arm.GetAngel(p.X, p.Y);
+                                        arm.GetAngle(p.X, p.Y);
                                         arm.Rbm = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
                                         arm.DrawMechanism();
                                         pictureBox1.Image = arm.Rbm;
