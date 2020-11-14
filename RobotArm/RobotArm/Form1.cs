@@ -175,6 +175,20 @@ namespace RobotArm
                 endX = double.Parse(textBox1.Text);
                 endY = double.Parse(textBox2.Text);
                 List<PointF> points = arm.DrawLine(startX, startY, endX, endY);//直线细分后的点集
+                if (startX == 0 && startY == 0)//排除特殊情况，因为当机械臂末端位于原点时，机械臂可以有无数姿态
+                {
+                    double m = arm.Ang1;
+                    arm.GetAngle(points[1].X, points[1].Y);
+                    double n = arm.Ang1;
+                    for(int i = 0;i < Math.Abs(n - m) / 0.5; i++)
+                    {
+                        arm.Ang1 = m + i/(Math.Abs(n - m) / 0.5)*(n-m);
+                        arm.Rbm = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
+                        arm.DrawMechanism();//根据大小臂旋转角度绘制机械臂
+                        pictureBox1.Image = arm.Rbm;//将更新后的机械臂设置为pictureBox的Image
+                        arm.DelayMs(4);
+                    }
+                }
                 foreach (PointF point in points)
                 {
                     arm.GetAngle(point.X, point.Y);//对每个点求解对应的大小臂旋转角度
@@ -191,6 +205,20 @@ namespace RobotArm
                 endX = double.Parse(textBox3.Text);
                 endY = double.Parse(textBox4.Text);
                 points = arm.DrawLine(startX, startY, endX, endY);
+                if (startX == 0 && startY == 0)//排除特殊情况，因为当机械臂末端位于原点时，机械臂可以有无数姿态
+                {
+                    double m = arm.Ang1;
+                    arm.GetAngle(points[1].X, points[1].Y);
+                    double n = arm.Ang1;
+                    for (int i = 0; i < (Math.Abs(n - m) * 5 *180 / Math.PI); i++)
+                    {
+                        arm.Ang1 = m + i / (Math.Abs(n - m) * 5 * 180 / Math.PI) * (n - m);
+                        arm.Rbm = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
+                        arm.DrawMechanism();//根据大小臂旋转角度绘制机械臂
+                        pictureBox1.Image = arm.Rbm;//将更新后的机械臂设置为pictureBox的Image
+                        arm.DelayMs(4);
+                    }
+                }
                 timer1.Enabled = true;
                 foreach (PointF point in points)
                 {

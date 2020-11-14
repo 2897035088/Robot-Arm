@@ -47,7 +47,7 @@ namespace RobotArm
             double x, y;//用来表示下一个机械臂末端位置
             List<PointF> points = new List<PointF>();
             double r = Math.Sqrt((startx - endx) * (startx - endx) + (starty - endy) * (starty - endy));//直线长度
-            //存在bug，因为是按线段长度划分的，不是按角度划分，因为一个很小的线段可能对应很大的一个角度变化，
+            //存在bug，因为是按线段长度划分的，不是按角度划分，因此一个很小的线段可能对应很大的一个角度变化，
             //特别是当前末端位置与原点间的线段 与 当前末端位置与下一末端目标位置间的线段 近乎垂直时，角度变化最大
             for (int i = 0; i <= r / 0.05; i++)//对所画图形进行分段计数
             {
@@ -189,5 +189,33 @@ namespace RobotArm
             while (s < delayTime);
         }
         #endregion
+
+        //#region 想法可能有误
+        /////<summary>
+        /////绘制直线时，返回点集（机械臂末端在这些点时小臂的位姿为垂直与该直线）
+        /////</summary>
+        //public List<PointF> EspecialPoints(PointF startp,PointF endp)
+        //{
+        //    List<PointF> points = new List<PointF>();
+        //    double k = (endp.Y - startp.Y) / (endp.X - endp.X);//斜线斜率
+        //    double a = startp.Y - k * startp.X;//该直线表示为：y = kx + a;
+        //    double b;//该直线表示为：y = kx + b;这条直线与上一条直线平行，斜率k相同，
+        //    double m = 1 + k * k;
+        //    double difference = L2 * Math.Sqrt(m);//两条直线的表达式中a的差的绝对值（即：|a-b|）
+        //    if (a > 0)  //这种分类为L1=L2的情况，若L1！= L2就不是这般了（未细研究）
+        //    {
+        //        b = a - difference;
+        //    }
+        //    else if(a < 0)
+        //    {
+        //        b = a + difference;
+        //    }//这时直线y = kx + b与直线y = kx + a之间的距离为 L2
+        //    double x = (-k * b - Math.Sqrt(m * L1 * L1 - b * b)) / m;
+        //    if()
+        //    PointF point;
+
+        //    return ;
+        //}
+        //#endregion
     }
 }
